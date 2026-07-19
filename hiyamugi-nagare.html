@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぶっかけひやむぎ ながれ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ice: #EFF6F6;
+    --ice-deep: #DCEBEC;
+    --indigo: #1C3D4D;
+    --indigo-deep: #12262F;
+    --noodle: #EDE6D6;
+    --plum: #A8384F;
+    --leaf: #4F6B4A;
+    --ink: #22333B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ice);
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    line-height:1.8;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.mincho{font-family:'Shippori Mincho', serif;}
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--plum); outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 6vw;
+    transition:background .4s ease, box-shadow .4s ease, padding .4s ease;
+  }
+  header.solid{
+    background:rgba(239,246,246,0.92);
+    backdrop-filter:blur(6px);
+    box-shadow:0 2px 14px rgba(28,61,77,0.08);
+    padding:12px 6vw;
+  }
+  .logo{
+    font-size:1.25rem; font-weight:700; letter-spacing:.08em; color:var(--indigo);
+  }
+  nav ul{list-style:none; display:flex; gap:2.2rem;}
+  nav a{font-size:.92rem; letter-spacing:.05em; color:var(--indigo); position:relative;}
+  nav a::after{
+    content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px;
+    background:var(--plum); transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  @media (max-width:720px){ nav ul{gap:1.1rem;} nav a{font-size:.78rem;} .logo{font-size:1.05rem;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; min-height:100vh; display:flex; flex-direction:column;
+    justify-content:center; align-items:center; text-align:center;
+    padding:0 6vw; overflow:hidden;
+  }
+  .ripple-field{position:absolute; inset:0; z-index:0;}
+  .ripple{
+    position:absolute; border-radius:50%; border:1px solid rgba(28,61,77,0.16);
+    animation:expand 6s ease-out infinite;
+  }
+  @keyframes expand{
+    0%{width:0; height:0; opacity:.8; transform:translate(-50%,-50%);}
+    100%{width:1400px; height:1400px; opacity:0; transform:translate(-50%,-50%);}
+  }
+  .hero-content{position:relative; z-index:2;}
+  .eyebrow{
+    font-size:.8rem; letter-spacing:.35em; color:var(--plum); margin-bottom:1.4rem;
+    display:inline-block;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 8vw, 5.6rem); color:var(--indigo); line-height:1.15;
+    font-weight:700;
+  }
+  .hero h1 span{display:block; font-size:.42em; color:var(--leaf); margin-top:.6rem; letter-spacing:.12em;}
+  .hero p{
+    margin-top:1.8rem; font-size:1.02rem; color:var(--ink); max-width:32em;
+    margin-left:auto; margin-right:auto;
+  }
+  .hero-cta{
+    margin-top:2.6rem; display:inline-block; padding:.95rem 2.4rem;
+    background:var(--indigo); color:var(--ice); border-radius:2px;
+    font-size:.92rem; letter-spacing:.1em; transition:transform .3s ease, background .3s ease;
+  }
+  .hero-cta:hover{background:var(--indigo-deep); transform:translateY(-2px);}
+  .scroll-cue{
+    position:absolute; bottom:2.4rem; left:50%; transform:translateX(-50%);
+    font-size:.72rem; letter-spacing:.2em; color:var(--indigo); opacity:.6;
+    display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  }
+  .scroll-cue::after{
+    content:""; width:1px; height:34px; background:var(--indigo);
+    animation:drip 1.8s ease-in-out infinite;
+  }
+  @keyframes drip{0%,100%{opacity:.15;} 50%{opacity:.7;}}
+
+  /* ---------- NOREN DIVIDER (signature element) ---------- */
+  .noren{
+    position:relative; height:96px; background:linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    display:flex; z-index:5;
+  }
+  .noren::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:6px;
+    background:repeating-linear-gradient(90deg, var(--noodle) 0 40px, transparent 40px 44px);
+    opacity:.5;
+  }
+  .noren-slat{
+    flex:1; border-left:1px solid rgba(237,230,214,0.12);
+    clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+    transform-origin:top center;
+    animation:sway 5s ease-in-out infinite;
+  }
+  .noren-slat:nth-child(odd){animation-delay:-1.4s;}
+  .noren-slat:nth-child(3n){animation-delay:-2.8s;}
+  @keyframes sway{
+    0%,100%{transform:rotate(0deg);}
+    50%{transform:rotate(0.6deg);}
+  }
+  .noren-mark{
+    position:absolute; left:50%; top:14px; transform:translateX(-50%);
+    color:var(--noodle); font-family:'Shippori Mincho',serif; font-size:1.3rem;
+    letter-spacing:.5em; padding-left:.5em; z-index:2;
+  }
+
+  section{padding:7rem 6vw; max-width:1100px; margin:0 auto;}
+  .section-head{margin-bottom:3.2rem; max-width:36em;}
+  .section-head .eyebrow{color:var(--leaf);}
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem); color:var(--indigo);}
+  .section-head p{margin-top:1rem; color:var(--ink); opacity:.85;}
+
+  /* ---------- KODAWARI ---------- */
+  .kodawari-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:2.4rem;
+  }
+  @media (max-width:800px){.kodawari-grid{grid-template-columns:1fr;}}
+  .kodawari-card{
+    background:#fff; border:1px solid var(--ice-deep); border-radius:3px;
+    padding:2.2rem 1.8rem; position:relative;
+  }
+  .kodawari-card svg{width:38px; height:38px; margin-bottom:1.4rem; color:var(--plum);}
+  .kodawari-card h3{font-size:1.2rem; color:var(--indigo); margin-bottom:.7rem;}
+  .kodawari-card p{font-size:.92rem; opacity:.8;}
+
+  /* ---------- MENU ---------- */
+  .menu-wrap{background:var(--indigo-deep); color:var(--noodle);}
+  .menu-wrap .section-head h2{color:var(--noodle);}
+  .menu-wrap .section-head p{color:var(--noodle); opacity:.7;}
+  .menu-wrap .eyebrow{color:#E0A8B4;}
+  .menu-list{display:flex; flex-direction:column;}
+  .menu-item{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:1.3rem 0; border-bottom:1px solid rgba(237,230,214,0.15);
+    gap:1rem;
+  }
+  .menu-item.featured{
+    background:rgba(237,230,214,0.05); padding:1.6rem 1.2rem; border-radius:2px;
+    border-bottom:1px solid rgba(237,230,214,0.15);
+  }
+  .menu-item .name{font-size:1.05rem;}
+  .menu-item .desc{display:block; font-size:.8rem; opacity:.6; margin-top:.3rem; font-weight:400;}
+  .menu-item .price{font-family:'Shippori Mincho',serif; font-size:1.15rem; white-space:nowrap; color:var(--noodle);}
+  .menu-note{margin-top:2rem; font-size:.8rem; opacity:.55;}
+
+  /* ---------- SCHEDULE ---------- */
+  .schedule-table{width:100%; border-collapse:collapse; margin-top:1rem;}
+  .schedule-table th{
+    text-align:left; font-size:.78rem; letter-spacing:.1em; color:var(--leaf);
+    padding-bottom:.8rem; border-bottom:2px solid var(--indigo); font-weight:700;
+  }
+  .schedule-table td{
+    padding:1.1rem 0; border-bottom:1px solid var(--ice-deep); font-size:.95rem;
+  }
+  .schedule-table td.day{color:var(--indigo); font-weight:700; width:20%;}
+  .schedule-table td.area{width:40%;}
+  .badge{
+    display:inline-block; font-size:.7rem; padding:.2rem .6rem; border-radius:20px;
+    background:var(--ice-deep); color:var(--indigo); margin-left:.5rem;
+  }
+  .schedule-table{overflow-x:auto; display:block;}
+  @media (max-width:600px){
+    .schedule-table thead{display:none;}
+    .schedule-table, .schedule-table tbody, .schedule-table tr, .schedule-table td{display:block; width:100% !important;}
+    .schedule-table tr{padding:1rem 0; border-bottom:1px solid var(--ice-deep);}
+    .schedule-table td{border:none; padding:.25rem 0;}
+    .schedule-table td.day{font-size:1.05rem;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ice-deep); padding:4rem 6vw 2.4rem; text-align:center;
+  }
+  footer .mincho{font-size:1.4rem; color:var(--indigo); letter-spacing:.1em;}
+  footer .sns{margin:1.6rem 0; display:flex; gap:1.6rem; justify-content:center;}
+  footer .sns a{font-size:.85rem; color:var(--indigo); border-bottom:1px solid var(--indigo);}
+  footer .fine{margin-top:2rem; font-size:.75rem; opacity:.55;}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="logo mincho">ながれ</div>
+  <nav>
+    <ul>
+      <li><a href="#kodawari">こだわり</a></li>
+      <li><a href="#menu">メニュー</a></li>
+      <li><a href="#schedule">出店情報</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="ripple-field" id="rippleField"></div>
+  <div class="hero-content">
+    <span class="eyebrow">KITCHEN CAR / COLD NOODLE</span>
+    <h1>ぶっかけひやむぎ<span>キッチンカー「ながれ」、まちを巡る一杯</span></h1>
+    <p>氷水でしめた麦の香りと、キレのあるだし。焼けたアスファルトの上にも、涼しい水辺をひとつ。今日はどこに現れるか、下の出店情報でチェックしてください。</p>
+    <a href="#schedule" class="hero-cta">本日の出店エリアを見る</a>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<div class="noren">
+  <div class="noren-mark">涼</div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+</div>
+
+<section id="kodawari">
+  <div class="section-head">
+    <span class="eyebrow">KODAWARI</span>
+    <h2>三つの、譲れないこと。</h2>
+    <p>キッチンカーだからこそ、素材と仕込みには手を抜きません。その場でしめる、その場で和える、それが「ながれ」の一杯です。</p>
+  </div>
+  <div class="kodawari-grid">
+    <div class="kodawari-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 12c3-4 6-4 9 0s6 4 9 0M3 17c3-4 6-4 9 0s6 4 9 0"/></svg>
+      <h3>氷水〆の麦麺</h3>
+      <p>国産小麦100%の細麺を、注文が入ってから氷水でしめます。伸びる前の、いちばんコシがある瞬間をお出しします。</p>
+    </div>
+    <div class="kodawari-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v4M7 8l2 2M17 8l-2 2M4 14h16M6 18h12"/></svg>
+      <h3>二段仕込みのだし</h3>
+      <p>昆布と鰹で引いた一番だしに、少量の梅酢を効かせた「ながれ」独自のかけだし。暑い日に飲み干したくなる後味です。</p>
+    </div>
+    <div class="kodawari-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21c-4-3-7-6-7-10a7 7 0 0114 0c0 4-3 7-7 10z"/></svg>
+      <h3>薬味は3種、無料</h3>
+      <p>みょうが・大葉・生姜は基本の一杯にすべて無料でお付けします。好きなだけ、好きな組み合わせでどうぞ。</p>
+    </div>
+  </div>
+</section>
+
+<div class="noren">
+  <div class="noren-mark">麦</div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+</div>
+
+<div class="menu-wrap" id="menu">
+  <section>
+    <div class="section-head">
+      <span class="eyebrow">MENU</span>
+      <h2>本日のメニュー</h2>
+      <p>すべて注文後、氷水でしめてご提供します。少しお待ちいただくのも、この一杯のうちです。</p>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item featured">
+        <div><div class="name">ぶっかけひやむぎ<span class="badge">看板</span></div><span class="desc">二段仕込みのかけだし・薬味3種付き</span></div>
+        <div class="price">¥600</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="name">温泉たまごのせ</div><span class="desc">とろけるたまごを一つ追加</span></div>
+        <div class="price">¥750</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="name">冷しゃぶのせ</div><span class="desc">豚バラの冷しゃぶをたっぷりと</span></div>
+        <div class="price">¥850</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="name">薬味増し</div><span class="desc">みょうが・大葉・生姜、お好きなだけ</span></div>
+        <div class="price">¥100</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="name">大盛り</div><span class="desc">麺量1.5倍</span></div>
+        <div class="price">+¥100</div>
+      </div>
+    </div>
+    <p class="menu-note">※ メニュー・価格は仮の内容です。実際の内容に差し替えてください。</p>
+  </section>
+</div>
+
+<div class="noren">
+  <div class="noren-mark">route</div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+  <div class="noren-slat"></div><div class="noren-slat"></div><div class="noren-slat"></div>
+</div>
+
+<section id="schedule">
+  <div class="section-head">
+    <span class="eyebrow">SCHEDULE</span>
+    <h2>今週、どこに流れるか。</h2>
+    <p>「ながれ」は曜日ごとに出店場所を変えて巡っています。天候により変更・中止になる場合はSNSでお知らせします。</p>
+  </div>
+  <table class="schedule-table">
+    <thead>
+      <tr><th>曜日</th><th>エリア</th><th>時間</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="day">月</td><td class="area">オフィス街・◯◯ビル前</td><td>11:30 - 14:00</td></tr>
+      <tr><td class="day">火</td><td class="area">◯◯公園 駐車場</td><td>11:30 - 14:00</td></tr>
+      <tr><td class="day">水</td><td class="area">仕込み・お休み</td><td>―</td></tr>
+      <tr><td class="day">木</td><td class="area">◯◯工業団地</td><td>11:30 - 14:00</td></tr>
+      <tr><td class="day">金</td><td class="area">◯◯駅前 広場</td><td>11:30 - 19:00<span class="badge">夜も営業</span></td></tr>
+      <tr><td class="day">土日</td><td class="area">イベント出店(SNS要確認)</td><td>随時</td></tr>
+    </tbody>
+  </table>
+  <p class="menu-note">※ 出店場所・時間は仮の内容です。実際の内容に差し替えてください。</p>
+</section>
+
+<footer>
+  <div class="mincho">ぶっかけひやむぎ ながれ</div>
+  <div class="sns">
+    <a href="#">Instagram</a>
+    <a href="#">X</a>
+  </div>
+  <p style="font-size:.85rem; opacity:.7;">お問い合わせ 000-0000-0000(仮)</p>
+  <p class="fine">© 2026 ぶっかけひやむぎ ながれ</p>
+</footer>
+
+<script>
+  // header solid on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('solid', window.scrollY > 40);
+  });
+
+  // hero ripple generator
+  const field = document.getElementById('rippleField');
+  const positions = [[20,30],[70,60],[50,20],[85,80],[15,75]];
+  function spawnRipple(x, y, delay){
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    r.style.left = x + '%';
+    r.style.top = y + '%';
+    r.style.animationDelay = delay + 's';
+    field.appendChild(r);
+  }
+  positions.forEach((p, i) => spawnRipple(p[0], p[1], i * 1.2));
+</script>
+
+</body>
+</html>
